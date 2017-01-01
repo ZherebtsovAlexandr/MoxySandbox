@@ -11,6 +11,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.arellomobile.mvp.MvpAppCompatActivity;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.mansonheart.User;
 import com.mansonheart.moxysandbox.adapterdelegates.MainAdapter;
@@ -18,7 +19,7 @@ import com.mansonheart.moxysandbox.adapterdelegates.MainAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements UsersView {
+public class MainActivity extends MvpAppCompatActivity implements UsersView {
 
     private RecyclerView rvMain;
     private MainAdapter mainAdapter;
@@ -37,8 +38,7 @@ public class MainActivity extends AppCompatActivity implements UsersView {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                usersPresenter.init();
             }
         });
 
@@ -46,12 +46,6 @@ public class MainActivity extends AppCompatActivity implements UsersView {
         rvMain.setLayoutManager(new LinearLayoutManager(this));
         mainAdapter = new MainAdapter(this, new ArrayList<User>());
         rvMain.setAdapter(mainAdapter);
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        usersPresenter.init();
     }
 
     @Override
