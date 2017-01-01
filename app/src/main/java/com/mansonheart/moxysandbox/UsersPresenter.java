@@ -17,14 +17,19 @@ import io.reactivex.Observable;
 public class UsersPresenter extends MvpPresenter<UsersView> {
 
     private GetUsers getUsers;
+    private boolean isFirstTime;
 
     public UsersPresenter() {
         this.getUsers = new GetUsers();
+        this.isFirstTime = true;
     }
 
     public void load(Observable<Integer> offsetObservable) {
-        Observable<Integer> offsetObservableWithInit = offsetObservable.startWith(0);
-        getUsers.execute(new UserListObserver(), GetUsers.Params.forPaging(offsetObservableWithInit));
+        if (isFirstTime) {
+            offsetObservable = offsetObservable.startWith(0);
+            isFirstTime = false;
+        }
+        getUsers.execute(new UserListObserver(), GetUsers.Params.forPaging(offsetObservable));
     }
 
     private final class UserListObserver extends DefaultObserver<List<User>> {
