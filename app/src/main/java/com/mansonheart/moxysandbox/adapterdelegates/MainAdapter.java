@@ -44,7 +44,7 @@ public class MainAdapter extends RecyclerView.Adapter {
     }
 
     public void addItems(List<User> items) {
-        this.items = items;
+        this.items.addAll(items);
         this.notifyDataSetChanged();
     }
 }

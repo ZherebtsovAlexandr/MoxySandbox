@@ -2,8 +2,6 @@ package com.mansonheart.moxysandbox;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -19,6 +17,8 @@ import com.mansonheart.moxysandbox.adapterdelegates.MainAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.reactivex.Observable;
+
 public class MainActivity extends MvpAppCompatActivity implements UsersView {
 
     private RecyclerView rvMain;
@@ -33,19 +33,21 @@ public class MainActivity extends MvpAppCompatActivity implements UsersView {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                usersPresenter.init();
+
             }
         });
 
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         rvMain = (RecyclerView) findViewById(R.id.rv_main);
-        rvMain.setLayoutManager(new LinearLayoutManager(this));
+        rvMain.setLayoutManager(linearLayoutManager);
         mainAdapter = new MainAdapter(this, new ArrayList<User>());
         rvMain.setAdapter(mainAdapter);
+        final Observable<Integer> offsetObservable = ScrollObservable.from(rvMain);
+        usersPresenter.load(offsetObservable);
     }
 
     @Override
