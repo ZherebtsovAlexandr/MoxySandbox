@@ -1,4 +1,4 @@
-package com.mansonheart.moxysandbox;
+package com.mansonheart.moxysandbox.ui.util;
 
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;

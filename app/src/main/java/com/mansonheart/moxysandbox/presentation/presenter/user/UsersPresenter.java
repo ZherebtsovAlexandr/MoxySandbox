@@ -1,10 +1,11 @@
-package com.mansonheart.moxysandbox;
+package com.mansonheart.moxysandbox.presentation.presenter.user;
 
 import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
 import com.mansonheart.DefaultObserver;
 import com.mansonheart.GetUsers;
 import com.mansonheart.User;
+import com.mansonheart.moxysandbox.presentation.view.user.UsersView;
 
 import java.util.List;
 

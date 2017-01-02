@@ -1,4 +1,4 @@
-package com.mansonheart.moxysandbox;
+package com.mansonheart.moxysandbox.ui.activity;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -12,6 +12,10 @@ import android.view.View;
 import com.arellomobile.mvp.MvpAppCompatActivity;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.mansonheart.User;
+import com.mansonheart.moxysandbox.R;
+import com.mansonheart.moxysandbox.ui.util.ScrollObservable;
+import com.mansonheart.moxysandbox.presentation.presenter.user.UsersPresenter;
+import com.mansonheart.moxysandbox.presentation.view.user.UsersView;
 import com.mansonheart.moxysandbox.adapterdelegates.MainAdapter;
 
 import java.util.ArrayList;
@@ -23,6 +27,7 @@ public class MainActivity extends MvpAppCompatActivity implements UsersView {
 
     private RecyclerView rvMain;
     private MainAdapter mainAdapter;
+
 
     @InjectPresenter
     UsersPresenter usersPresenter;

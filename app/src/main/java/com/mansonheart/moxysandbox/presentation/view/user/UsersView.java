@@ -1,4 +1,4 @@
-package com.mansonheart.moxysandbox;
+package com.mansonheart.moxysandbox.presentation.view.user;
 
 import com.arellomobile.mvp.MvpView;
 import com.mansonheart.User;
