@@ -10,4 +10,6 @@ import java.util.List;
  */
 public interface UsersView extends MvpView {
     void showUsers(List<User> users);
+
+    void showTitle(String title);
 }

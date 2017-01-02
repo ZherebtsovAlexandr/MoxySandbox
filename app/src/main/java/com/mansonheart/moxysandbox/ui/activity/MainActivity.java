@@ -1,59 +1,76 @@
 package com.mansonheart.moxysandbox.ui.activity;
 
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
+import android.support.v4.app.Fragment;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
+import android.widget.Toast;
 
 import com.arellomobile.mvp.MvpAppCompatActivity;
 import com.arellomobile.mvp.presenter.InjectPresenter;
-import com.mansonheart.User;
+import com.mansonheart.moxysandbox.App;
 import com.mansonheart.moxysandbox.R;
-import com.mansonheart.moxysandbox.ui.util.ScrollObservable;
-import com.mansonheart.moxysandbox.presentation.presenter.user.UsersPresenter;
-import com.mansonheart.moxysandbox.presentation.view.user.UsersView;
-import com.mansonheart.moxysandbox.adapterdelegates.MainAdapter;
+import com.mansonheart.moxysandbox.presentation.presenter.main.MainPresenter;
+import com.mansonheart.moxysandbox.presentation.view.user.MainView;
+import com.mansonheart.moxysandbox.ui.fragment.user.UserDetailFragment;
+import com.mansonheart.moxysandbox.ui.fragment.user.UsersFragment;
 
-import java.util.ArrayList;
-import java.util.List;
+import ru.terrakok.cicerone.Navigator;
+import ru.terrakok.cicerone.android.SupportFragmentNavigator;
 
-import io.reactivex.Observable;
+public class MainActivity extends MvpAppCompatActivity implements MainView {
 
-public class MainActivity extends MvpAppCompatActivity implements UsersView {
+    private final String USERS_SCREEN = "users_screen";
+    private final String USER_DETAIL_SCREEN = "user_detail_screen";
 
-    private RecyclerView rvMain;
-    private MainAdapter mainAdapter;
+    private Navigator navigator = new SupportFragmentNavigator(getSupportFragmentManager(),
+            R.id.master_frame) {
+
+        @Override
+        protected Fragment createFragment(String screenKey, Object data) {
+            switch (screenKey) {
+                case USERS_SCREEN:
+                    return UsersFragment.newInstance();
+                case USER_DETAIL_SCREEN:
+                    return UserDetailFragment.newInstance((String) data);
+                default:
+                    throw new RuntimeException("Unknown screen key!");
+            }
+        }
+
+        @Override
+        protected void showSystemMessage(String message) {
+            Toast.makeText(MainActivity.this, message, Toast.LENGTH_SHORT).show();
+        }
+
+        @Override
+        protected void exit() {
+            finish();
+        }
+    };
 
 
     @InjectPresenter
-    UsersPresenter usersPresenter;
+    MainPresenter mainPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-            }
-        });
-
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-        rvMain = (RecyclerView) findViewById(R.id.rv_main);
-        rvMain.setLayoutManager(linearLayoutManager);
-        mainAdapter = new MainAdapter(this, new ArrayList<User>());
-        rvMain.setAdapter(mainAdapter);
-        final Observable<Integer> offsetObservable = ScrollObservable.from(rvMain);
-        usersPresenter.load(offsetObservable);
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        App.INSTANCE.getNavigatorHolder().setNavigator(navigator);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        App.INSTANCE.getNavigatorHolder().removeNavigator();
+    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -78,7 +95,7 @@ public class MainActivity extends MvpAppCompatActivity implements UsersView {
     }
 
     @Override
-    public void showUsers(List<User> users) {
-        mainAdapter.addItems(users);
+    public void openUsers() {
+        App.INSTANCE.getRouter().navigateTo(USERS_SCREEN);
     }
 }

@@ -23,6 +23,7 @@ public class UsersPresenter extends MvpPresenter<UsersView> {
     public UsersPresenter() {
         this.getUsers = new GetUsers();
         this.isFirstTime = true;
+        getViewState().showTitle("Presenter: " + this.toString());
     }
 
     public void load(Observable<Integer> offsetObservable) {
