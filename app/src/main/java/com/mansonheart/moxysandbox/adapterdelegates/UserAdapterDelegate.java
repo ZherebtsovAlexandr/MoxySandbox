@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.hannesdorfmann.adapterdelegates3.AdapterDelegate;
+import com.mansonheart.GetUsers;
 import com.mansonheart.User;
 import com.mansonheart.moxysandbox.R;
 
@@ -20,8 +21,27 @@ import java.util.List;
 public class UserAdapterDelegate extends AdapterDelegate<List<User>> {
 
     private LayoutInflater inflater;
+    private Params params;
 
-    public UserAdapterDelegate(Activity activity) {
+    public interface OnClickListener {
+        void onClick(User user);
+    }
+
+    public static final class Params {
+
+        private OnClickListener onClickListener;
+
+        public Params(OnClickListener onClickListener) {
+            this.onClickListener = onClickListener;
+        }
+
+        public static Params forUser(OnClickListener onClickListener) {
+            return new Params(onClickListener);
+        }
+    }
+
+    public UserAdapterDelegate(Activity activity, Params params) {
+        this.params = params;
         this.inflater = activity.getLayoutInflater();
     }
 
@@ -40,9 +60,15 @@ public class UserAdapterDelegate extends AdapterDelegate<List<User>> {
     @Override
     protected void onBindViewHolder(@NonNull List<User> items, int position, @NonNull RecyclerView.ViewHolder holder, @NonNull List<Object> payloads) {
         UserViewHolder vh = (UserViewHolder) holder;
-        User user = (User) items.get(position);
+        final User user = (User) items.get(position);
 
         vh.name.setText(user.getName());
+        vh.name.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                params.onClickListener.onClick(user);
+            }
+        });
 
     }
 
@@ -53,6 +79,7 @@ public class UserAdapterDelegate extends AdapterDelegate<List<User>> {
         public UserViewHolder(View itemView) {
             super(itemView);
             name = (TextView) itemView.findViewById(R.id.tv_name);
+
         }
     }
 

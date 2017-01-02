@@ -13,6 +13,7 @@ import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.mansonheart.User;
 import com.mansonheart.moxysandbox.R;
 import com.mansonheart.moxysandbox.adapterdelegates.MainAdapter;
+import com.mansonheart.moxysandbox.adapterdelegates.UserAdapterDelegate;
 import com.mansonheart.moxysandbox.presentation.presenter.user.UsersPresenter;
 import com.mansonheart.moxysandbox.presentation.view.user.UsersView;
 import com.mansonheart.moxysandbox.ui.util.ScrollObservable;
@@ -22,7 +23,7 @@ import java.util.List;
 
 import io.reactivex.Observable;
 
-public class UsersFragment extends MvpAppCompatFragment implements UsersView {
+public class UsersFragment extends MvpAppCompatFragment implements UsersView, UserAdapterDelegate.OnClickListener {
     public static final String TAG = "UsersFragment";
 
     private RecyclerView rvMain;
@@ -55,7 +56,9 @@ public class UsersFragment extends MvpAppCompatFragment implements UsersView {
         tvTitle = (TextView) view.findViewById(R.id.tv_title);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this.getActivity());
         rvMain.setLayoutManager(linearLayoutManager);
-        mainAdapter = new MainAdapter(this.getActivity(), new ArrayList<User>());
+        mainAdapter = new MainAdapter(this.getActivity(),
+                MainAdapter.Params.forMainAdapter(new UserAdapterDelegate.Params(this)),
+                new ArrayList<User>());
         rvMain.setAdapter(mainAdapter);
         final Observable<Integer> offsetObservable = ScrollObservable.from(rvMain);
         mUsersPresenter.load(offsetObservable);
@@ -69,5 +72,10 @@ public class UsersFragment extends MvpAppCompatFragment implements UsersView {
     @Override
     public void showTitle(String title) {
         tvTitle.setText(title);
+    }
+
+    @Override
+    public void onClick(User user) {
+        mUsersPresenter.onUserClick(user);
     }
 }

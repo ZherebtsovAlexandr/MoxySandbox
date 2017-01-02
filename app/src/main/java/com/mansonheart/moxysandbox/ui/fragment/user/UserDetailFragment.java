@@ -48,6 +48,6 @@ public class UserDetailFragment extends MvpAppCompatFragment implements UserDeta
 
     @Override
     public void showUserName(String userName) {
-
+        tvName.setText(userName);
     }
 }

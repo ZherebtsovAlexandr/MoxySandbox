@@ -17,10 +17,23 @@ public class MainAdapter extends RecyclerView.Adapter {
     private AdapterDelegatesManager<List<User>> delegatesManager;
     private List<User> items;
 
-    public MainAdapter(Activity activity, List<User> items) {
+    public static final class Params {
+
+        private UserAdapterDelegate.Params userParams;
+
+        public Params(UserAdapterDelegate.Params userParams) {
+            this.userParams = userParams;
+        }
+
+        public static Params forMainAdapter(UserAdapterDelegate.Params userParams) {
+            return new Params(userParams);
+        }
+    }
+
+    public MainAdapter(Activity activity, MainAdapter.Params params, List<User> items) {
         this.items = items;
         delegatesManager = new AdapterDelegatesManager<>();
-        delegatesManager.addDelegate(new UserAdapterDelegate(activity));
+        delegatesManager.addDelegate(new UserAdapterDelegate(activity, params.userParams));
     }
 
     @Override

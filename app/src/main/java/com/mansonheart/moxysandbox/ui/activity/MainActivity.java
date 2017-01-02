@@ -20,8 +20,8 @@ import ru.terrakok.cicerone.android.SupportFragmentNavigator;
 
 public class MainActivity extends MvpAppCompatActivity implements MainView {
 
-    private final String USERS_SCREEN = "users_screen";
-    private final String USER_DETAIL_SCREEN = "user_detail_screen";
+    public static final String USERS_SCREEN = "users_screen";
+    public static final String USER_DETAIL_SCREEN = "user_detail_screen";
 
     private Navigator navigator = new SupportFragmentNavigator(getSupportFragmentManager(),
             R.id.master_frame) {

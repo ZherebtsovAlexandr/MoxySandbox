@@ -5,7 +5,9 @@ import com.arellomobile.mvp.MvpPresenter;
 import com.mansonheart.DefaultObserver;
 import com.mansonheart.GetUsers;
 import com.mansonheart.User;
+import com.mansonheart.moxysandbox.App;
 import com.mansonheart.moxysandbox.presentation.view.user.UsersView;
+import com.mansonheart.moxysandbox.ui.activity.MainActivity;
 
 import java.util.List;
 
@@ -32,6 +34,10 @@ public class UsersPresenter extends MvpPresenter<UsersView> {
             isFirstTime = false;
         }
         getUsers.execute(new UserListObserver(), GetUsers.Params.forPaging(offsetObservable));
+    }
+
+    public void onUserClick(User user) {
+        App.INSTANCE.getRouter().navigateTo(MainActivity.USER_DETAIL_SCREEN, user.getName());
     }
 
     private final class UserListObserver extends DefaultObserver<List<User>> {
