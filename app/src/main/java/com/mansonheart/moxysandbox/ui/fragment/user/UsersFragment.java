@@ -10,12 +10,14 @@ import android.widget.TextView;
 
 import com.arellomobile.mvp.MvpAppCompatFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
+import com.arellomobile.mvp.presenter.ProvidePresenter;
 import com.mansonheart.User;
 import com.mansonheart.moxysandbox.R;
 import com.mansonheart.moxysandbox.adapterdelegates.MainAdapter;
 import com.mansonheart.moxysandbox.adapterdelegates.UserAdapterDelegate;
 import com.mansonheart.moxysandbox.presentation.presenter.user.UsersPresenter;
 import com.mansonheart.moxysandbox.presentation.view.user.UsersView;
+import com.mansonheart.moxysandbox.ui.common.RouterProvider;
 import com.mansonheart.moxysandbox.ui.util.ScrollObservable;
 
 import java.util.ArrayList;
@@ -33,6 +35,13 @@ public class UsersFragment extends MvpAppCompatFragment implements UsersView, Us
 
     @InjectPresenter
     UsersPresenter mUsersPresenter;
+
+    @ProvidePresenter
+    UsersPresenter provideUsersPresenter() {
+        return new UsersPresenter(
+                ((RouterProvider) getParentFragment()).provideRouter()
+        );
+    }
 
     public static UsersFragment newInstance() {
         UsersFragment fragment = new UsersFragment();

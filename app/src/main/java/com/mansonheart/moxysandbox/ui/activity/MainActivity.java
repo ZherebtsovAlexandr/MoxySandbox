@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -12,42 +13,62 @@ import com.arellomobile.mvp.MvpAppCompatActivity;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.mansonheart.moxysandbox.App;
 import com.mansonheart.moxysandbox.R;
+import com.mansonheart.moxysandbox.presentation.Screens;
 import com.mansonheart.moxysandbox.presentation.presenter.main.MainPresenter;
 import com.mansonheart.moxysandbox.presentation.view.user.MainView;
-import com.mansonheart.moxysandbox.ui.fragment.user.UserDetailFragment;
-import com.mansonheart.moxysandbox.ui.fragment.user.UsersFragment;
+import com.mansonheart.moxysandbox.ui.common.BackButtonListener;
+import com.mansonheart.moxysandbox.ui.common.RouterProvider;
+import com.mansonheart.moxysandbox.ui.fragment.bottom.TabContainerFragment;
 
 import ru.terrakok.cicerone.Navigator;
-import ru.terrakok.cicerone.android.SupportFragmentNavigator;
+import ru.terrakok.cicerone.Router;
+import ru.terrakok.cicerone.commands.Back;
+import ru.terrakok.cicerone.commands.Command;
+import ru.terrakok.cicerone.commands.Replace;
+import ru.terrakok.cicerone.commands.SystemMessage;
 
-public class MainActivity extends MvpAppCompatActivity implements MainView {
+public class MainActivity extends MvpAppCompatActivity implements MainView, RouterProvider {
 
-    private Navigator navigator = new SupportFragmentNavigator(getSupportFragmentManager(),
-            R.id.master_frame) {
+    private TabContainerFragment usersTabFragment;
+    private TabContainerFragment placesTabFragment;
+    private TabContainerFragment favoritesTabFragment;
 
+    private Navigator navigator = new Navigator() {
         @Override
-        protected Fragment createFragment(String screenKey, Object data) {
-            switch (screenKey) {
-                case USERS_SCREEN:
-                    return UsersFragment.newInstance();
-                case USER_DETAIL_SCREEN:
-                    return UserDetailFragment.newInstance((String) data);
-                default:
-                    throw new RuntimeException("Unknown screen key!");
+        public void applyCommand(Command command) {
+            if (command instanceof Back) {
+                finish();
+            } else if (command instanceof SystemMessage) {
+                Toast.makeText(MainActivity.this, ((SystemMessage) command).getMessage(), Toast.LENGTH_SHORT).show();
+            } else if (command instanceof Replace) {
+                FragmentManager fm = getSupportFragmentManager();
+
+                switch (((Replace) command).getScreenKey()) {
+                    case Screens.USERS_SCREEN:
+                        fm.beginTransaction()
+                                .detach(favoritesTabFragment)
+                                .detach(placesTabFragment)
+                                .attach(usersTabFragment)
+                                .commitNow();
+                        break;
+                    case Screens.PLACES_SCREEN:
+                        fm.beginTransaction()
+                                .detach(usersTabFragment)
+                                .detach(favoritesTabFragment)
+                                .attach(placesTabFragment)
+                                .commitNow();
+                        break;
+                    case Screens.FAVORITES_SCREEN:
+                        fm.beginTransaction()
+                                .detach(usersTabFragment)
+                                .detach(placesTabFragment)
+                                .attach(favoritesTabFragment)
+                                .commitNow();
+                        break;
+                }
             }
         }
-
-        @Override
-        protected void showSystemMessage(String message) {
-            Toast.makeText(MainActivity.this, message, Toast.LENGTH_SHORT).show();
-        }
-
-        @Override
-        protected void exit() {
-            finish();
-        }
     };
-
     BottomNavigationView bottomNavigationView;
 
     @InjectPresenter
@@ -76,8 +97,8 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
                         return false;
                     }
                 });
+        initContainers();
     }
-
 
     @Override
     protected void onResume() {
@@ -91,6 +112,17 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
         App.INSTANCE.getNavigatorHolder().removeNavigator();
     }
 
+    @Override
+    public void onBackPressed() {
+        Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.master_frame);
+        if (fragment != null
+                && fragment instanceof BackButtonListener
+                && ((BackButtonListener) fragment).onBackPressed()) {
+            return;
+        } else {
+            mainPresenter.onBackPressed();
+        }
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -116,5 +148,37 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
 
     @Override
     public void highlightTab(int position) {
+    }
+
+    private void initContainers() {
+        FragmentManager fm = getSupportFragmentManager();
+        usersTabFragment = (TabContainerFragment) fm.findFragmentByTag(Screens.USERS_TAB);
+        if (usersTabFragment == null) {
+            usersTabFragment = TabContainerFragment.newInstance(Screens.USERS_TAB);
+            fm.beginTransaction()
+                    .add(R.id.master_frame, usersTabFragment, Screens.USERS_TAB)
+                    .detach(usersTabFragment).commitNow();
+        }
+
+        placesTabFragment = (TabContainerFragment) fm.findFragmentByTag(Screens.PLACES_TAB);
+        if (placesTabFragment == null) {
+            placesTabFragment = TabContainerFragment.newInstance(Screens.PLACES_TAB);
+            fm.beginTransaction()
+                    .add(R.id.master_frame, placesTabFragment, Screens.PLACES_TAB)
+                    .detach(placesTabFragment).commitNow();
+        }
+
+        favoritesTabFragment = (TabContainerFragment) fm.findFragmentByTag(Screens.FAVORITES_TAB);
+        if (favoritesTabFragment == null) {
+            favoritesTabFragment = TabContainerFragment.newInstance(Screens.FAVORITES_TAB);
+            fm.beginTransaction()
+                    .add(R.id.master_frame, favoritesTabFragment, Screens.FAVORITES_TAB)
+                    .detach(favoritesTabFragment).commitNow();
+        }
+    }
+
+    @Override
+    public Router provideRouter() {
+        return App.INSTANCE.getGlobalRouter();
     }
 }

@@ -8,11 +8,14 @@ import android.widget.TextView;
 
 import com.arellomobile.mvp.MvpAppCompatFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
+import com.arellomobile.mvp.presenter.ProvidePresenter;
 import com.mansonheart.moxysandbox.R;
 import com.mansonheart.moxysandbox.presentation.presenter.user.UserDetailPresenter;
 import com.mansonheart.moxysandbox.presentation.view.user.UserDetailView;
+import com.mansonheart.moxysandbox.ui.common.BackButtonListener;
+import com.mansonheart.moxysandbox.ui.common.RouterProvider;
 
-public class UserDetailFragment extends MvpAppCompatFragment implements UserDetailView {
+public class UserDetailFragment extends MvpAppCompatFragment implements UserDetailView, BackButtonListener {
 
     public static final String TAG = "UserDetailFragment";
     public static final String USER_NAME_ARG = "UserName";
@@ -21,6 +24,14 @@ public class UserDetailFragment extends MvpAppCompatFragment implements UserDeta
 
     @InjectPresenter
     UserDetailPresenter mUserDetailPresenter;
+
+    @ProvidePresenter
+    public UserDetailPresenter createUserDetailPresenter() {
+        return new UserDetailPresenter(
+                ((RouterProvider) getParentFragment()).provideRouter(),
+                getArguments().getString(USER_NAME_ARG, "Unknown name"));
+    }
+
 
     public static UserDetailFragment newInstance(String userName) {
         UserDetailFragment fragment = new UserDetailFragment();
@@ -40,7 +51,6 @@ public class UserDetailFragment extends MvpAppCompatFragment implements UserDeta
 
     @Override
     public void onViewCreated(final View view, final Bundle savedInstanceState) {
-        String userName = getArguments().getString(USER_NAME_ARG, "Unknown name");
         tvName = (TextView) view.findViewById(R.id.tv_name);
         super.onViewCreated(view, savedInstanceState);
 
@@ -49,5 +59,12 @@ public class UserDetailFragment extends MvpAppCompatFragment implements UserDeta
     @Override
     public void showUserName(String userName) {
         tvName.setText(userName);
+    }
+
+
+    @Override
+    public boolean onBackPressed() {
+        mUserDetailPresenter.onBackPressed();
+        return true;
     }
 }

@@ -6,12 +6,14 @@ import com.mansonheart.DefaultObserver;
 import com.mansonheart.GetUsers;
 import com.mansonheart.User;
 import com.mansonheart.moxysandbox.App;
+import com.mansonheart.moxysandbox.presentation.Screens;
 import com.mansonheart.moxysandbox.presentation.view.user.UsersView;
 import com.mansonheart.moxysandbox.ui.activity.MainActivity;
 
 import java.util.List;
 
 import io.reactivex.Observable;
+import ru.terrakok.cicerone.Router;
 
 /**
  * Created by Admin on 01.01.2017.
@@ -19,11 +21,13 @@ import io.reactivex.Observable;
 @InjectViewState
 public class UsersPresenter extends MvpPresenter<UsersView> {
 
+    private final Router router;
     private GetUsers getUsers;
     private boolean isFirstTime;
 
-    public UsersPresenter() {
+    public UsersPresenter(Router router) {
         this.getUsers = new GetUsers();
+        this.router = router;
         this.isFirstTime = true;
         getViewState().showTitle("Presenter: " + this.toString());
     }
@@ -37,7 +41,7 @@ public class UsersPresenter extends MvpPresenter<UsersView> {
     }
 
     public void onUserClick(User user) {
-        App.INSTANCE.getRouter().navigateTo(MainActivity.USER_DETAIL_SCREEN, user.getName());
+        router.navigateTo(Screens.USER_DETAIL_SCREEN, user.getName());
     }
 
     private final class UserListObserver extends DefaultObserver<List<User>> {
