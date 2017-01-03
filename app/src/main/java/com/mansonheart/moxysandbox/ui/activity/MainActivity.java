@@ -1,6 +1,8 @@
 package com.mansonheart.moxysandbox.ui.activity;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -19,9 +21,6 @@ import ru.terrakok.cicerone.Navigator;
 import ru.terrakok.cicerone.android.SupportFragmentNavigator;
 
 public class MainActivity extends MvpAppCompatActivity implements MainView {
-
-    public static final String USERS_SCREEN = "users_screen";
-    public static final String USER_DETAIL_SCREEN = "user_detail_screen";
 
     private Navigator navigator = new SupportFragmentNavigator(getSupportFragmentManager(),
             R.id.master_frame) {
@@ -49,6 +48,7 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
         }
     };
 
+    BottomNavigationView bottomNavigationView;
 
     @InjectPresenter
     MainPresenter mainPresenter;
@@ -57,7 +57,27 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
+        bottomNavigationView.setOnNavigationItemSelectedListener(
+                new BottomNavigationView.OnNavigationItemSelectedListener() {
+                    @Override
+                    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                        switch (item.getItemId()) {
+                            case R.id.action_users:
+                                mainPresenter.onUsersClick();
+                                break;
+                            case R.id.action_places:
+                                mainPresenter.onPlacesClick();
+                                break;
+                            case R.id.action_favorites:
+                                mainPresenter.onFavoritesClick();
+                                break;
+                        }
+                        return false;
+                    }
+                });
     }
+
 
     @Override
     protected void onResume() {
@@ -95,7 +115,6 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
     }
 
     @Override
-    public void openUsers() {
-        App.INSTANCE.getRouter().navigateTo(USERS_SCREEN);
+    public void highlightTab(int position) {
     }
 }
