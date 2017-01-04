@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import com.arellomobile.mvp.MvpAppCompatActivity;
 import com.arellomobile.mvp.presenter.InjectPresenter;
+import com.arellomobile.mvp.presenter.ProvidePresenter;
 import com.mansonheart.moxysandbox.App;
 import com.mansonheart.moxysandbox.R;
 import com.mansonheart.moxysandbox.presentation.Screens;
@@ -20,7 +21,10 @@ import com.mansonheart.moxysandbox.ui.common.BackButtonListener;
 import com.mansonheart.moxysandbox.ui.common.RouterProvider;
 import com.mansonheart.moxysandbox.ui.fragment.bottom.TabContainerFragment;
 
+import javax.inject.Inject;
+
 import ru.terrakok.cicerone.Navigator;
+import ru.terrakok.cicerone.NavigatorHolder;
 import ru.terrakok.cicerone.Router;
 import ru.terrakok.cicerone.commands.Back;
 import ru.terrakok.cicerone.commands.Command;
@@ -32,6 +36,12 @@ public class MainActivity extends MvpAppCompatActivity implements MainView, Rout
     private TabContainerFragment usersTabFragment;
     private TabContainerFragment placesTabFragment;
     private TabContainerFragment favoritesTabFragment;
+
+    @Inject
+    NavigatorHolder navigatorHolder;
+
+    @Inject
+    Router router;
 
     private Navigator navigator = new Navigator() {
         @Override
@@ -74,8 +84,14 @@ public class MainActivity extends MvpAppCompatActivity implements MainView, Rout
     @InjectPresenter
     MainPresenter mainPresenter;
 
+    @ProvidePresenter
+    MainPresenter provideMainPresenter() {
+        return new MainPresenter(router);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        App.INSTANCE.getAppComponent().inject(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
@@ -103,13 +119,13 @@ public class MainActivity extends MvpAppCompatActivity implements MainView, Rout
     @Override
     protected void onResume() {
         super.onResume();
-        App.INSTANCE.getNavigatorHolder().setNavigator(navigator);
+        navigatorHolder.setNavigator(navigator);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        App.INSTANCE.getNavigatorHolder().removeNavigator();
+        navigatorHolder.removeNavigator();
     }
 
     @Override
@@ -179,6 +195,6 @@ public class MainActivity extends MvpAppCompatActivity implements MainView, Rout
 
     @Override
     public Router provideRouter() {
-        return App.INSTANCE.getGlobalRouter();
+        return router;
     }
 }

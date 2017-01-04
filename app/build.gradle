@@ -25,6 +25,11 @@ dependencies {
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:appcompat-v7:25.0.0'
     compile 'com.android.support:design:25.0.0'
+
+    compile 'com.google.dagger:dagger:2.8'
+    apt 'com.google.dagger:dagger-compiler:2.8'
+
+
     compile 'com.hannesdorfmann:adapterdelegates3:3.0.0'
     compile 'com.arello-mobile:moxy:1.4.3'
     provided 'com.arello-mobile:moxy-compiler:1.4.3'

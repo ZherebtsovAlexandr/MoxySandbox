@@ -2,9 +2,10 @@ package com.mansonheart.moxysandbox.presentation.presenter.main;
 
 import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
-import com.mansonheart.moxysandbox.App;
 import com.mansonheart.moxysandbox.presentation.Screens;
 import com.mansonheart.moxysandbox.presentation.view.user.MainView;
+
+import ru.terrakok.cicerone.Router;
 
 /**
  * Created by alexandr on 02.01.17.
@@ -13,6 +14,12 @@ import com.mansonheart.moxysandbox.presentation.view.user.MainView;
 @InjectViewState
 public class MainPresenter extends MvpPresenter<MainView> {
 
+    private final Router router;
+
+    public MainPresenter(Router router){
+        this.router = router;
+    }
+
     @Override
     protected void onFirstViewAttach() {
         super.onFirstViewAttach();
@@ -20,23 +27,23 @@ public class MainPresenter extends MvpPresenter<MainView> {
     }
 
     public void onUsersClick() {
-        App.INSTANCE.getGlobalRouter().replaceScreen(Screens.USERS_SCREEN);
+        router.replaceScreen(Screens.USERS_SCREEN);
         getViewState().highlightTab(MainView.USERS_SCREEN_TAB_POSITION);
     }
 
 
     public void onPlacesClick() {
-        App.INSTANCE.getGlobalRouter().replaceScreen(Screens.PLACES_SCREEN);
+        router.replaceScreen(Screens.PLACES_SCREEN);
         getViewState().highlightTab(MainView.PLACES_TAB_POSITION);
     }
 
     public void onFavoritesClick() {
-        App.INSTANCE.getGlobalRouter().replaceScreen(Screens.FAVORITES_SCREEN);
+        router.replaceScreen(Screens.FAVORITES_SCREEN);
         getViewState().highlightTab(MainView.FAVORITES_TAB_POSITION);
     }
 
     public void onBackPressed() {
-        App.INSTANCE.getGlobalRouter().exit();
+        router.exit();
     }
 
 }

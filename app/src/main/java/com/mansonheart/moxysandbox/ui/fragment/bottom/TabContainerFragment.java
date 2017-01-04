@@ -10,12 +10,15 @@ import android.view.ViewGroup;
 import com.mansonheart.moxysandbox.App;
 import com.mansonheart.moxysandbox.R;
 import com.mansonheart.moxysandbox.presentation.Screens;
+import com.mansonheart.moxysandbox.presentation.navigation.LocalNavigatorHolder;
 import com.mansonheart.moxysandbox.ui.common.BackButtonListener;
 import com.mansonheart.moxysandbox.ui.common.RouterProvider;
 import com.mansonheart.moxysandbox.ui.fragment.favorite.FavoritesFragment;
 import com.mansonheart.moxysandbox.ui.fragment.place.PlacesFragment;
 import com.mansonheart.moxysandbox.ui.fragment.user.UserDetailFragment;
 import com.mansonheart.moxysandbox.ui.fragment.user.UsersFragment;
+
+import javax.inject.Inject;
 
 import ru.terrakok.cicerone.Navigator;
 import ru.terrakok.cicerone.Router;
@@ -29,6 +32,9 @@ public class TabContainerFragment extends Fragment implements RouterProvider, Ba
 
     private static final String EXTRA_NAME = "tcf_extra_name";
 
+    @Inject
+    LocalNavigatorHolder localNavigatorHolder;
+
     private Navigator navigator;
 
     public static TabContainerFragment newInstance(String name) {
@@ -39,6 +45,12 @@ public class TabContainerFragment extends Fragment implements RouterProvider, Ba
         fragment.setArguments(arguments);
 
         return fragment;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        App.INSTANCE.getAppComponent().inject(this);
+        super.onCreate(savedInstanceState);
     }
 
     @Nullable
@@ -54,13 +66,13 @@ public class TabContainerFragment extends Fragment implements RouterProvider, Ba
         if (getChildFragmentManager().findFragmentById(R.id.ftc_container) == null) {
             switch (getArguments().getString(EXTRA_NAME)) {
                 case Screens.USERS_TAB:
-                    App.INSTANCE.getLocalRouterForTab(getArguments().getString(EXTRA_NAME)).getRouter().replaceScreen(Screens.USERS_SCREEN);
+                    localNavigatorHolder.getRouter(getArguments().getString(EXTRA_NAME)).getRouter().replaceScreen(Screens.USERS_SCREEN);
                     break;
                 case Screens.PLACES_TAB:
-                    App.INSTANCE.getLocalRouterForTab(getArguments().getString(EXTRA_NAME)).getRouter().replaceScreen(Screens.PLACES_SCREEN);
+                    localNavigatorHolder.getRouter(getArguments().getString(EXTRA_NAME)).getRouter().replaceScreen(Screens.PLACES_SCREEN);
                     break;
                 case Screens.FAVORITES_TAB:
-                    App.INSTANCE.getLocalRouterForTab(getArguments().getString(EXTRA_NAME)).getRouter().replaceScreen(Screens.FAVORITES_SCREEN);
+                    localNavigatorHolder.getRouter(getArguments().getString(EXTRA_NAME)).getRouter().replaceScreen(Screens.FAVORITES_SCREEN);
                     break;
 
             }
@@ -70,12 +82,12 @@ public class TabContainerFragment extends Fragment implements RouterProvider, Ba
     @Override
     public void onResume() {
         super.onResume();
-        App.INSTANCE.getNavigatorHolderForLocalRouter(getArguments().getString(EXTRA_NAME)).setNavigator(getNavigator());
+        localNavigatorHolder.getNavigatorHolder(getArguments().getString(EXTRA_NAME)).setNavigator(getNavigator());
     }
 
     @Override
     public void onPause() {
-        App.INSTANCE.getNavigatorHolderForLocalRouter(getArguments().getString(EXTRA_NAME)).removeNavigator();
+        localNavigatorHolder.getNavigatorHolder(getArguments().getString(EXTRA_NAME)).removeNavigator();
         super.onPause();
     }
 
@@ -127,6 +139,6 @@ public class TabContainerFragment extends Fragment implements RouterProvider, Ba
 
     @Override
     public Router provideRouter() {
-        return App.INSTANCE.getLocalRouterForTab(getArguments().getString(EXTRA_NAME)).getRouter();
+        return localNavigatorHolder.getRouter(getArguments().getString(EXTRA_NAME)).getRouter();
     }
 }
