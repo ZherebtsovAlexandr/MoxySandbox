@@ -2,14 +2,13 @@ package com.mansonheart.moxysandbox.di;
 
 import com.mansonheart.moxysandbox.presentation.presenter.user.UserDetailPresenter;
 
-import dagger.Component;
 import dagger.Subcomponent;
 
 /**
  * Created by alexandr on 05.01.17.
  */
 
-@FragmentScope
+@PresenterScope
 @Subcomponent(
         modules = {
                 UserDetailModule.class

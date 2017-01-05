@@ -12,7 +12,7 @@ import dagger.Provides;
 @Module
 public class UserDetailModule {
 
-    @FragmentScope
+    @PresenterScope
     @Provides
     UserManager provideUserManager() {
         return new UserManager();
