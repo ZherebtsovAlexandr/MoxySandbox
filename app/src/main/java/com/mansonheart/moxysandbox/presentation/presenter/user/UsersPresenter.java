@@ -44,6 +44,12 @@ public class UsersPresenter extends MvpPresenter<UsersView> {
         router.navigateTo(Screens.USER_DETAIL_SCREEN, user.getName());
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        getUsers.dispose();
+    }
+
     private final class UserListObserver extends DefaultObserver<List<User>> {
 
         @Override

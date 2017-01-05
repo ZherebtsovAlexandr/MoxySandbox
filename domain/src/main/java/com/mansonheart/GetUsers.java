@@ -11,6 +11,10 @@ public class GetUsers extends UseCase<List<User>, GetUsers.Params> {
 
     private final int LIMIT = 20;
 
+    public GetUsers() {
+        System.out.println("Dagger: GetUsers created");
+    }
+
     @Override
     Observable<List<User>> buildUseCaseObservable(Params params) {
         return params.offsetObservable
@@ -41,4 +45,9 @@ public class GetUsers extends UseCase<List<User>, GetUsers.Params> {
         }
     }
 
+    @Override
+    protected void finalize() throws Throwable {
+        super.finalize();
+        System.out.println("Dagger: GetUsers destroy");
+    }
 }

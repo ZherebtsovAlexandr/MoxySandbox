@@ -14,6 +14,7 @@ import com.mansonheart.moxysandbox.presentation.navigation.LocalNavigatorHolder;
 import com.mansonheart.moxysandbox.ui.common.BackButtonListener;
 import com.mansonheart.moxysandbox.ui.common.RouterProvider;
 import com.mansonheart.moxysandbox.ui.fragment.favorite.FavoritesFragment;
+import com.mansonheart.moxysandbox.ui.fragment.place.PlaceDetailFragment;
 import com.mansonheart.moxysandbox.ui.fragment.place.PlacesFragment;
 import com.mansonheart.moxysandbox.ui.fragment.user.UserDetailFragment;
 import com.mansonheart.moxysandbox.ui.fragment.user.UsersFragment;
@@ -117,6 +118,8 @@ public class TabContainerFragment extends Fragment implements RouterProvider, Ba
                             return UserDetailFragment.newInstance((String) data);
                         case Screens.PLACES_SCREEN:
                             return PlacesFragment.newInstance();
+                        case Screens.PLACE_DETAIL_SCREEN:
+                            return PlaceDetailFragment.newInstance((Integer) data);
                         case Screens.FAVORITES_SCREEN:
                             return FavoritesFragment.newInstance();
                         default:

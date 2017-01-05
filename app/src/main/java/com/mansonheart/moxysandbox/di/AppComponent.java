@@ -1,7 +1,9 @@
 package com.mansonheart.moxysandbox.di;
 
+import com.mansonheart.moxysandbox.presentation.presenter.user.UserDetailPresenter;
 import com.mansonheart.moxysandbox.ui.activity.MainActivity;
 import com.mansonheart.moxysandbox.ui.fragment.bottom.TabContainerFragment;
+import com.mansonheart.moxysandbox.ui.fragment.place.PlacesFragment;
 
 import javax.inject.Singleton;
 
@@ -18,8 +20,10 @@ import dagger.Component;
 })
 public interface AppComponent {
 
+    UserDetailComponent plus(UserDetailModule userDetailModule);
+
     void inject(MainActivity activity);
 
-    void inject(TabContainerFragment activity);
+    void inject(TabContainerFragment fragment);
 
 }
