@@ -9,12 +9,12 @@ import android.util.Log;
 public class UserManager {
 
     public UserManager() {
-        Log.d("UserManager", "Created:" + this);
+        Log.d("Lifecycle", "UserManager created:" + this);
     }
 
     @Override
     protected void finalize() throws Throwable {
         super.finalize();
-        Log.d("UserManager", "Destroy");
+        Log.d("Lifecycle", "UserManager destroy: " + this);
     }
 }
