@@ -10,7 +10,6 @@ import com.mansonheart.moxysandbox.di.user.UserListPresenterComponent;
 import com.mansonheart.moxysandbox.di.user.UserListPresenterModule;
 import com.mansonheart.moxysandbox.ui.activity.MainActivity;
 import com.mansonheart.moxysandbox.ui.fragment.bottom.TabContainerFragment;
-import com.mansonheart.moxysandbox.ui.fragment.place.PlaceDetailFragment;
 
 import javax.inject.Singleton;
 

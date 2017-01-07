@@ -52,7 +52,6 @@ public class PlaceDetailFragment extends BaseFragment implements PlaceDetailView
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        Log.d("Lifecycle", "PlaceDetailFragment create: " + this);
         getAppComponent().plus(
                 new PlaceDetailsPresenterModule(
                         getArguments().getInt(EXTRA_NUMBER),
@@ -91,12 +90,6 @@ public class PlaceDetailFragment extends BaseFragment implements PlaceDetailView
     public boolean onBackPressed() {
         mPlaceDetailPresenter.onBackPressed();
         return true;
-    }
-
-    @Override
-    protected void finalize() throws Throwable {
-        super.finalize();
-        Log.d("Lifecycle", "PlaceDetailFragment destroy: " + this);
     }
 
 }

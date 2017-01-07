@@ -1,6 +1,6 @@
 package com.mansonheart.moxysandbox.model;
 
-import android.util.Log;
+import com.mansonheart.Logger;
 
 import javax.inject.Inject;
 
@@ -10,14 +10,17 @@ import javax.inject.Inject;
 
 public class PlaceMapper {
 
+    private final Logger logger;
+
     @Inject
-    public PlaceMapper() {
-        Log.d("Lifecycle", "PlaceMapper created:" + this);
+    public PlaceMapper(Logger logger) {
+        this.logger = logger;
+        logger.log("Lifecycle", "PlaceMapper created (" + this + ")");
     }
 
     @Override
     protected void finalize() throws Throwable {
         super.finalize();
-        Log.d("Lifecycle", "PlaceMapper was collected by GC (" + this + ")");
+        logger.log("Lifecycle", "PlaceMapper was collected by GC (" + this + ")");
     }
 }

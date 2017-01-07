@@ -10,9 +10,12 @@ import io.reactivex.Observable;
 
 public class GetUser extends UseCase<User, GetUser.Params> {
 
+    private final Logger logger;
+
     @Inject
-    public GetUser() {
-        System.out.println("Lifecycle: GetUser created");
+    public GetUser(Logger logger) {
+        this.logger = logger;
+        logger.log("Lifecycle", "GetUser created (" + this + ")");
     }
 
     @Override
@@ -36,6 +39,6 @@ public class GetUser extends UseCase<User, GetUser.Params> {
     @Override
     protected void finalize() throws Throwable {
         super.finalize();
-        System.out.println("Lifecycle: GetUser was collected by GC");
+        logger.log("Lifecycle", "GetUser was collected by GC (" + this + ")");
     }
 }

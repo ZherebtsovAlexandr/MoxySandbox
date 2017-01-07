@@ -1,5 +1,9 @@
 package com.mansonheart.moxysandbox.di.app;
 
+import android.app.Application;
+
+import com.mansonheart.moxysandbox.model.ConsoleLogger;
+import com.mansonheart.Logger;
 import com.mansonheart.moxysandbox.model.UserMapper;
 
 import javax.inject.Singleton;
@@ -13,9 +17,22 @@ import dagger.Provides;
 
 @Module
 public class AppModule {
+
+    private final Application application;
+
+    public AppModule(Application application) {
+        this.application = application;
+    }
+
     @Singleton
     @Provides
-    UserMapper userMapper() {
-        return new UserMapper();
+    Logger provideLogger() {
+        return new ConsoleLogger();
+    }
+
+    @Singleton
+    @Provides
+    UserMapper userMapper(Logger logger) {
+        return new UserMapper(logger);
     }
 }

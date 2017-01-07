@@ -13,9 +13,12 @@ public class GetUsers extends UseCase<List<User>, GetUsers.Params> {
 
     private final int LIMIT = 20;
 
+    public final Logger logger;
+
     @Inject
-    public GetUsers() {
-        System.out.println("Lifecycle: GetUsers created");
+    public GetUsers(Logger logger) {
+        this.logger = logger;
+        logger.log("Lifecycle", "GetUsers created (" + this + ")");
     }
 
     @Override
@@ -51,6 +54,6 @@ public class GetUsers extends UseCase<List<User>, GetUsers.Params> {
     @Override
     protected void finalize() throws Throwable {
         super.finalize();
-        System.out.println("Lifecycle: GetUsers was collected by GC");
+        logger.log("Lifecycle", "GetUsers was collected by GC (" + this + ")");
     }
 }

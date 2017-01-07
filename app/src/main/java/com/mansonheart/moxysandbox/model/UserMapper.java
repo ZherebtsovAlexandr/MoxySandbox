@@ -1,6 +1,6 @@
 package com.mansonheart.moxysandbox.model;
 
-import android.util.Log;
+import com.mansonheart.Logger;
 
 /**
  * Created by alexandr on 05.01.17.
@@ -8,13 +8,16 @@ import android.util.Log;
 
 public class UserMapper {
 
-    public UserMapper() {
-        Log.d("Lifecycle", "UserMapper created (" + this + ")");
+    private final Logger logger;
+
+    public UserMapper(Logger logger) {
+        this.logger = logger;
+        logger.log("Lifecycle", "UserMapper created (" + this + ")");
     }
 
     @Override
     protected void finalize() throws Throwable {
         super.finalize();
-        Log.d("Lifecycle", "UserMapper was collected by GC (" + this + ")");
+        logger.log("Lifecycle", "UserMapper was collected by GC (" + this + ")");
     }
 }

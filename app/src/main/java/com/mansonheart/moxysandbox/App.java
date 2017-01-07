@@ -3,6 +3,7 @@ package com.mansonheart.moxysandbox;
 import android.app.Application;
 
 import com.mansonheart.moxysandbox.di.app.AppComponent;
+import com.mansonheart.moxysandbox.di.app.AppModule;
 import com.mansonheart.moxysandbox.di.app.DaggerAppComponent;
 
 /**
@@ -23,6 +24,7 @@ public class App extends Application {
 
     public void initAppComponent() {
         appComponent = DaggerAppComponent.builder()
+                .appModule(new AppModule(this))
                 .build();
     }
 

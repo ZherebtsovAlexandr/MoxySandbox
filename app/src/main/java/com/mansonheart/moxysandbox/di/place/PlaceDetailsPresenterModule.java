@@ -1,6 +1,7 @@
 package com.mansonheart.moxysandbox.di.place;
 
 import com.mansonheart.moxysandbox.di.PresenterScope;
+import com.mansonheart.Logger;
 import com.mansonheart.moxysandbox.model.PlaceMapper;
 import com.mansonheart.moxysandbox.presentation.presenter.place.PlaceDetailPresenter;
 
@@ -27,8 +28,8 @@ public class PlaceDetailsPresenterModule {
 
     @PresenterScope
     @Provides
-    public PlaceDetailPresenter providePlaceDetailPresenter(PlaceMapper placeMapper) {
-        return new PlaceDetailPresenter(number, router, placeMapper);
+    public PlaceDetailPresenter providePlaceDetailPresenter(PlaceMapper placeMapper, Logger logger) {
+        return new PlaceDetailPresenter(number, router, placeMapper, logger);
     }
 
 }
