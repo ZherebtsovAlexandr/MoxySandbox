@@ -1,4 +1,4 @@
-package com.mansonheart.moxysandbox.di;
+package com.mansonheart.moxysandbox.di.app;
 
 import com.mansonheart.moxysandbox.presentation.navigation.LocalNavigatorHolder;
 

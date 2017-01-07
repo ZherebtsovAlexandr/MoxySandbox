@@ -1,6 +1,7 @@
-package com.mansonheart.moxysandbox.di;
+package com.mansonheart.moxysandbox.di.user;
 
 import com.mansonheart.GetUsers;
+import com.mansonheart.moxysandbox.di.PresenterScope;
 import com.mansonheart.moxysandbox.presentation.presenter.user.UsersPresenter;
 
 import dagger.Module;

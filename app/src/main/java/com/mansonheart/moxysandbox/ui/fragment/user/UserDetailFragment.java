@@ -9,7 +9,7 @@ import android.widget.TextView;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.arellomobile.mvp.presenter.ProvidePresenter;
 import com.mansonheart.moxysandbox.R;
-import com.mansonheart.moxysandbox.di.UserDetailPresenterModule;
+import com.mansonheart.moxysandbox.di.user.UserDetailPresenterModule;
 import com.mansonheart.moxysandbox.presentation.presenter.user.UserDetailPresenter;
 import com.mansonheart.moxysandbox.presentation.view.user.UserDetailView;
 import com.mansonheart.moxysandbox.ui.common.BackButtonListener;

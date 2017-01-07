@@ -6,15 +6,15 @@ import android.util.Log;
  * Created by alexandr on 05.01.17.
  */
 
-public class UserManager {
+public class UserMapper {
 
-    public UserManager() {
-        Log.d("Lifecycle", "UserManager created:" + this);
+    public UserMapper() {
+        Log.d("Lifecycle", "UserMapper created (" + this + ")");
     }
 
     @Override
     protected void finalize() throws Throwable {
         super.finalize();
-        Log.d("Lifecycle", "UserManager destroy: " + this);
+        Log.d("Lifecycle", "UserMapper was collected by GC (" + this + ")");
     }
 }

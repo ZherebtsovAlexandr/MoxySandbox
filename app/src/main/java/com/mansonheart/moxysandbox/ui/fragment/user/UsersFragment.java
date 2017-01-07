@@ -14,7 +14,7 @@ import com.mansonheart.User;
 import com.mansonheart.moxysandbox.R;
 import com.mansonheart.moxysandbox.adapterdelegates.MainAdapter;
 import com.mansonheart.moxysandbox.adapterdelegates.UserAdapterDelegate;
-import com.mansonheart.moxysandbox.di.UserListPresenterModule;
+import com.mansonheart.moxysandbox.di.user.UserListPresenterModule;
 import com.mansonheart.moxysandbox.presentation.presenter.user.UsersPresenter;
 import com.mansonheart.moxysandbox.presentation.view.user.UsersView;
 import com.mansonheart.moxysandbox.ui.common.RouterProvider;

@@ -12,7 +12,7 @@ public class GetUser extends UseCase<User, GetUser.Params> {
 
     @Inject
     public GetUser() {
-        System.out.println("Dagger: GetUser created");
+        System.out.println("Lifecycle: GetUser created");
     }
 
     @Override
@@ -36,6 +36,6 @@ public class GetUser extends UseCase<User, GetUser.Params> {
     @Override
     protected void finalize() throws Throwable {
         super.finalize();
-        System.out.println("Dagger: GetUser destroy");
+        System.out.println("Lifecycle: GetUser was collected by GC");
     }
 }

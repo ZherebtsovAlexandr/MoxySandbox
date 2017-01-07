@@ -1,5 +1,6 @@
-package com.mansonheart.moxysandbox.di;
+package com.mansonheart.moxysandbox.di.user;
 
+import com.mansonheart.moxysandbox.di.PresenterScope;
 import com.mansonheart.moxysandbox.ui.fragment.user.UserDetailFragment;
 
 import dagger.Subcomponent;

@@ -1,7 +1,8 @@
-package com.mansonheart.moxysandbox.di;
+package com.mansonheart.moxysandbox.di.user;
 
 import com.mansonheart.GetUser;
-import com.mansonheart.moxysandbox.model.UserManager;
+import com.mansonheart.moxysandbox.di.PresenterScope;
+import com.mansonheart.moxysandbox.model.UserMapper;
 import com.mansonheart.moxysandbox.presentation.presenter.user.UserDetailPresenter;
 
 import dagger.Module;
@@ -25,7 +26,7 @@ public class UserDetailPresenterModule {
 
     @PresenterScope
     @Provides
-    UserDetailPresenter provideUserDetailPresenter(GetUser getUser, UserManager userManager) {
-        return new UserDetailPresenter(userName, getUser, userManager, router);
+    UserDetailPresenter provideUserDetailPresenter(GetUser getUser, UserMapper userMapper) {
+        return new UserDetailPresenter(userName, getUser, userMapper, router);
     }
 }

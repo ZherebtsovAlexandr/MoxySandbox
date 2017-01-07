@@ -1,7 +1,5 @@
 package com.mansonheart.moxysandbox.presentation.navigation;
 
-import com.mansonheart.moxysandbox.di.LocalNavigationModule;
-
 import java.util.HashMap;
 
 import ru.terrakok.cicerone.Cicerone;

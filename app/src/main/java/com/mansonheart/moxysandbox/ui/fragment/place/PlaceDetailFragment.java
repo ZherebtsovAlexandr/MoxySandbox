@@ -8,21 +8,20 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.arellomobile.mvp.MvpAppCompatFragment;
-import com.arellomobile.mvp.presenter.ProvidePresenter;
-import com.mansonheart.moxysandbox.App;
-import com.mansonheart.moxysandbox.R;
-import com.mansonheart.moxysandbox.model.PlaceManager;
-import com.mansonheart.moxysandbox.presentation.view.place.PlaceDetailView;
-import com.mansonheart.moxysandbox.presentation.presenter.place.PlaceDetailPresenter;
-
 import com.arellomobile.mvp.presenter.InjectPresenter;
+import com.arellomobile.mvp.presenter.ProvidePresenter;
+import com.mansonheart.moxysandbox.R;
+import com.mansonheart.moxysandbox.di.place.PlaceDetailsPresenterModule;
+import com.mansonheart.moxysandbox.presentation.presenter.place.PlaceDetailPresenter;
+import com.mansonheart.moxysandbox.presentation.view.place.PlaceDetailView;
 import com.mansonheart.moxysandbox.ui.common.BackButtonListener;
 import com.mansonheart.moxysandbox.ui.common.RouterProvider;
+import com.mansonheart.moxysandbox.ui.fragment.common.BaseFragment;
 
 import javax.inject.Inject;
+import javax.inject.Provider;
 
-public class PlaceDetailFragment extends MvpAppCompatFragment implements PlaceDetailView, BackButtonListener {
+public class PlaceDetailFragment extends BaseFragment implements PlaceDetailView, BackButtonListener {
     public static final String TAG = "PlaceDetailFragment";
     private static final String EXTRA_NUMBER = "extra_number";
 
@@ -30,14 +29,14 @@ public class PlaceDetailFragment extends MvpAppCompatFragment implements PlaceDe
     Button btnNext;
 
     @Inject
-    PlaceManager placeManager;
+    Provider<PlaceDetailPresenter> provider;
 
     @InjectPresenter
     PlaceDetailPresenter mPlaceDetailPresenter;
 
     @ProvidePresenter
     PlaceDetailPresenter providePlaceDetailPresenter() {
-        return new PlaceDetailPresenter(getArguments().getInt(EXTRA_NUMBER), ((RouterProvider) getParentFragment()).provideRouter(), placeManager);
+        return provider.get();
     }
 
     public static PlaceDetailFragment newInstance(int number) {
@@ -53,7 +52,12 @@ public class PlaceDetailFragment extends MvpAppCompatFragment implements PlaceDe
     @Override
     public void onCreate(Bundle savedInstanceState) {
         Log.d("Lifecycle", "PlaceDetailFragment create: " + this);
-        App.INSTANCE.getAppComponent().inject(this);
+        getAppComponent().plus(
+                new PlaceDetailsPresenterModule(
+                        getArguments().getInt(EXTRA_NUMBER),
+                        ((RouterProvider) getParentFragment()).provideRouter()
+                )
+        ).inject(this);
         super.onCreate(savedInstanceState);
     }
 

@@ -2,8 +2,8 @@ package com.mansonheart.moxysandbox;
 
 import android.app.Application;
 
-import com.mansonheart.moxysandbox.di.AppComponent;
-import com.mansonheart.moxysandbox.di.DaggerAppComponent;
+import com.mansonheart.moxysandbox.di.app.AppComponent;
+import com.mansonheart.moxysandbox.di.app.DaggerAppComponent;
 
 /**
  * Created by alexandr on 02.01.17.
