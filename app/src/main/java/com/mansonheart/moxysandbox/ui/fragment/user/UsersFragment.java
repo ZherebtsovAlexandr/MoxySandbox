@@ -8,39 +8,43 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.arellomobile.mvp.MvpAppCompatFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.arellomobile.mvp.presenter.ProvidePresenter;
 import com.mansonheart.User;
 import com.mansonheart.moxysandbox.R;
 import com.mansonheart.moxysandbox.adapterdelegates.MainAdapter;
 import com.mansonheart.moxysandbox.adapterdelegates.UserAdapterDelegate;
+import com.mansonheart.moxysandbox.di.UserListPresenterModule;
 import com.mansonheart.moxysandbox.presentation.presenter.user.UsersPresenter;
 import com.mansonheart.moxysandbox.presentation.view.user.UsersView;
 import com.mansonheart.moxysandbox.ui.common.RouterProvider;
+import com.mansonheart.moxysandbox.ui.fragment.common.BaseFragment;
 import com.mansonheart.moxysandbox.ui.util.ScrollObservable;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+import javax.inject.Provider;
+
 import io.reactivex.Observable;
 
-public class UsersFragment extends MvpAppCompatFragment implements UsersView, UserAdapterDelegate.OnClickListener {
+public class UsersFragment extends BaseFragment implements UsersView, UserAdapterDelegate.OnClickListener {
     public static final String TAG = "UsersFragment";
 
     private RecyclerView rvMain;
     private TextView tvTitle;
     private MainAdapter mainAdapter;
 
+    @Inject
+    Provider<UsersPresenter> presenterProvider;
 
     @InjectPresenter
     UsersPresenter mUsersPresenter;
 
     @ProvidePresenter
     UsersPresenter provideUsersPresenter() {
-        return new UsersPresenter(
-                ((RouterProvider) getParentFragment()).provideRouter()
-        );
+        return presenterProvider.get();
     }
 
     public static UsersFragment newInstance() {
@@ -50,6 +54,14 @@ public class UsersFragment extends MvpAppCompatFragment implements UsersView, Us
         fragment.setArguments(args);
 
         return fragment;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        getAppComponent().plus(
+                new UserListPresenterModule(((RouterProvider) getParentFragment()).provideRouter())
+        ).inject(this);
+        super.onCreate(savedInstanceState);
     }
 
     @Override

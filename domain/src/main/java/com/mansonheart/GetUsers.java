@@ -3,6 +3,8 @@ package com.mansonheart;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
 import io.reactivex.functions.Function;
@@ -11,6 +13,7 @@ public class GetUsers extends UseCase<List<User>, GetUsers.Params> {
 
     private final int LIMIT = 20;
 
+    @Inject
     public GetUsers() {
         System.out.println("Dagger: GetUsers created");
     }

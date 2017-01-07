@@ -20,7 +20,9 @@ import dagger.Component;
 })
 public interface AppComponent {
 
-    UserDetailComponent plus(UserDetailModule userDetailModule);
+    UserListPresenterComponent plus(UserListPresenterModule userListPresenterModule);
+
+    UserDetailPresenterComponent plus(UserDetailPresenterModule userDetailPresenterModule);
 
     PlaceDetailComponent plus(PlaceDetailsModule placeDetailsModule);
 

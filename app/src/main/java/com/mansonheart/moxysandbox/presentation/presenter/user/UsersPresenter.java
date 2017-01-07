@@ -5,10 +5,8 @@ import com.arellomobile.mvp.MvpPresenter;
 import com.mansonheart.DefaultObserver;
 import com.mansonheart.GetUsers;
 import com.mansonheart.User;
-import com.mansonheart.moxysandbox.App;
 import com.mansonheart.moxysandbox.presentation.Screens;
 import com.mansonheart.moxysandbox.presentation.view.user.UsersView;
-import com.mansonheart.moxysandbox.ui.activity.MainActivity;
 
 import java.util.List;
 
@@ -25,8 +23,8 @@ public class UsersPresenter extends MvpPresenter<UsersView> {
     private GetUsers getUsers;
     private boolean isFirstTime;
 
-    public UsersPresenter(Router router) {
-        this.getUsers = new GetUsers();
+    public UsersPresenter(Router router, GetUsers getUsers) {
+        this.getUsers = getUsers;
         this.router = router;
         this.isFirstTime = true;
         getViewState().showTitle("Presenter: " + this.toString());

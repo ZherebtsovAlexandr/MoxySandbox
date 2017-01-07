@@ -1,6 +1,7 @@
 package com.mansonheart.moxysandbox.di;
 
 import com.mansonheart.moxysandbox.model.PlaceManager;
+import com.mansonheart.moxysandbox.model.UserManager;
 
 import javax.inject.Singleton;
 
@@ -18,5 +19,11 @@ public class AppModule {
     @Provides
     PlaceManager placeManager() {
         return new PlaceManager();
+    }
+
+    @Singleton
+    @Provides
+    UserManager userManager() {
+        return new UserManager();
     }
 }
