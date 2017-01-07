@@ -1,6 +1,7 @@
 package com.mansonheart.moxysandbox.ui.fragment.user;
 
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +25,7 @@ public class UserDetailFragment extends BaseFragment implements UserDetailView, 
     public static final String TAG = "UserDetailFragment";
     public static final String USER_NAME_ARG = "UserName";
 
+    public Toolbar toolbar;
     public TextView tvName;
 
     @Inject
@@ -67,6 +69,8 @@ public class UserDetailFragment extends BaseFragment implements UserDetailView, 
     @Override
     public void onViewCreated(final View view, final Bundle savedInstanceState) {
         tvName = (TextView) view.findViewById(R.id.tv_name);
+        toolbar = (Toolbar) view.findViewById(R.id.toolbar);
+        toolbar.setTitle(R.string.user_details);
         super.onViewCreated(view, savedInstanceState);
     }
 

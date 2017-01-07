@@ -3,6 +3,7 @@ package com.mansonheart.moxysandbox.ui.fragment.user;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,6 +33,7 @@ import io.reactivex.Observable;
 public class UsersFragment extends BaseFragment implements UsersView, UserAdapterDelegate.OnClickListener {
     public static final String TAG = "UsersFragment";
 
+    private Toolbar toolbar;
     private RecyclerView rvMain;
     private TextView tvTitle;
     private MainAdapter mainAdapter;
@@ -73,8 +75,10 @@ public class UsersFragment extends BaseFragment implements UsersView, UserAdapte
     @Override
     public void onViewCreated(final View view, final Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        toolbar = (Toolbar) view.findViewById(R.id.toolbar);
         rvMain = (RecyclerView) view.findViewById(R.id.rv_main);
         tvTitle = (TextView) view.findViewById(R.id.tv_title);
+        toolbar.setTitle(getResources().getString(R.string.users));
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this.getActivity());
         rvMain.setLayoutManager(linearLayoutManager);
         mainAdapter = new MainAdapter(this.getActivity(),
@@ -91,8 +95,8 @@ public class UsersFragment extends BaseFragment implements UsersView, UserAdapte
     }
 
     @Override
-    public void showTitle(String title) {
-        tvTitle.setText(title);
+    public void showInfo(String info) {
+        tvTitle.setText(info);
     }
 
     @Override

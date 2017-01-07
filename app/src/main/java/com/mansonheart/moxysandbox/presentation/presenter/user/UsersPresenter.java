@@ -27,7 +27,7 @@ public class UsersPresenter extends MvpPresenter<UsersView> {
         this.getUsers = getUsers;
         this.router = router;
         this.isFirstTime = true;
-        getViewState().showTitle("Presenter: " + this.toString());
+        getViewState().showInfo("Presenter: " + this.toString());
     }
 
     public void load(Observable<Integer> offsetObservable) {

@@ -4,4 +4,5 @@
     <string name="users">Users</string>
     <string name="places">Places</string>
     <string name="favorites">Favorites</string>
+    <string name="user_details">User details</string>
 </resources>

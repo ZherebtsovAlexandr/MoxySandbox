@@ -23,7 +23,7 @@ public class PlaceDetailPresenter extends MvpPresenter<PlaceDetailView> {
         Log.d("Lifecycle", "PlaceDetailPresenter created:" + this);
         this.router = router;
         this.number = number;
-        getViewState().setNumberText(String.valueOf(number));
+        getViewState().setNumberText("Place number " + String.valueOf(number));
     }
 
     public void onNextClick() {

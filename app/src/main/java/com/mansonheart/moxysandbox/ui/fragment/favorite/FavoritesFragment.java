@@ -1,6 +1,7 @@
 package com.mansonheart.moxysandbox.ui.fragment.favorite;
 
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,9 @@ import com.arellomobile.mvp.presenter.InjectPresenter;
 
 public class FavoritesFragment extends MvpAppCompatFragment implements FavoritesView {
     public static final String TAG = "FavoritesFragment";
+
+    Toolbar toolbar;
+
     @InjectPresenter
     FavoritesPresenter mFavoritesPresenter;
 
@@ -35,6 +39,7 @@ public class FavoritesFragment extends MvpAppCompatFragment implements Favorites
     @Override
     public void onViewCreated(final View view, final Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
+        toolbar = (Toolbar) view.findViewById(R.id.toolbar);
+        toolbar.setTitle(R.string.favorites);
     }
 }

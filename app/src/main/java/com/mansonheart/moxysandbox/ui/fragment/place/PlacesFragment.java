@@ -1,6 +1,7 @@
 package com.mansonheart.moxysandbox.ui.fragment.place;
 
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +22,7 @@ import javax.inject.Provider;
 public class PlacesFragment extends BaseFragment implements PlacesView {
     public static final String TAG = "PlacesFragment";
 
+    Toolbar toolbar;
     Button btnNext;
 
     @Inject
@@ -61,6 +63,7 @@ public class PlacesFragment extends BaseFragment implements PlacesView {
     @Override
     public void onViewCreated(final View view, final Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        toolbar = (Toolbar) view.findViewById(R.id.toolbar);
         btnNext = (Button) view.findViewById(R.id.btn_next);
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -68,5 +71,6 @@ public class PlacesFragment extends BaseFragment implements PlacesView {
                 mPlacesPresenter.onButtonClick();
             }
         });
+        toolbar.setTitle(R.string.places);
     }
 }
