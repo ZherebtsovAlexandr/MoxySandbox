@@ -9,7 +9,9 @@ import android.widget.TextView;
 
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.arellomobile.mvp.presenter.ProvidePresenter;
+import com.mansonheart.Logger;
 import com.mansonheart.moxysandbox.R;
+import com.mansonheart.moxysandbox.di.user.UserDetailPresenterComponent;
 import com.mansonheart.moxysandbox.di.user.UserDetailPresenterModule;
 import com.mansonheart.moxysandbox.presentation.presenter.user.UserDetailPresenter;
 import com.mansonheart.moxysandbox.presentation.view.user.UserDetailView;
@@ -20,13 +22,18 @@ import com.mansonheart.moxysandbox.ui.fragment.common.BaseFragment;
 import javax.inject.Inject;
 import javax.inject.Provider;
 
-public class UserDetailFragment extends BaseFragment implements UserDetailView, BackButtonListener {
+public class UserDetailFragment extends BaseFragment implements UserDetailView, BackButtonListener, BaseFragment.PresenterCallback {
 
     public static final String TAG = "UserDetailFragment";
     public static final String USER_NAME_ARG = "UserName";
 
     public Toolbar toolbar;
     public TextView tvName;
+
+    private UserDetailPresenterComponent component;
+
+    @Inject
+    Logger logger;
 
     @Inject
     Provider<UserDetailPresenter> presenterProvider;
@@ -52,11 +59,13 @@ public class UserDetailFragment extends BaseFragment implements UserDetailView, 
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        getAppComponent().plus(
+        component = getAppComponent().plus(
                 new UserDetailPresenterModule(
                         ((RouterProvider) getParentFragment()).provideRouter(),
                         getArguments().getString(USER_NAME_ARG, "Unknown name"))
-        ).inject(this);
+        );
+        component.inject(this);
+        setPresenterCallback(this);
         super.onCreate(savedInstanceState);
     }
 
@@ -84,5 +93,10 @@ public class UserDetailFragment extends BaseFragment implements UserDetailView, 
     public boolean onBackPressed() {
         mUserDetailPresenter.onBackPressed();
         return true;
+    }
+
+    @Override
+    public void onDestroyPresenter() {
+        component = null;
     }
 }
